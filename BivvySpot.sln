@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BivvySpot.Host", "BivvySpot.Host\BivvySpot.Host.csproj", "{8350987F-AADC-41FE-9C32-5C81AB70A5C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C9E1B4EA-838D-4280-BE98-0ED03E9FE6E7}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BivvySpot.Model", "BivvySpot.Model\BivvySpot.Model.csproj", "{116EA569-C39C-4249-BCF2-00537F111FFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B51F14C1-757E-45C4-98FE-D23DA598D24C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{80EE0B9C-BEFD-4ED9-866C-A8495A754FCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BivvySpot.Application", "BivvySpot.Application\BivvySpot.Application.csproj", "{BFDCF594-FA23-465D-A4F9-3F1DA9C0AF03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BivvySpot.Data", "BivvySpot.Data\BivvySpot.Data.csproj", "{DDDE9945-B138-4899-BB15-F8E6BEE1565E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BivvySpot.Contracts", "BivvySpot.Contracts\BivvySpot.Contracts.csproj", "{34F0474B-E1A1-41B2-8BB6-9113EEDFA081}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BivvySpot.Presentation", "BivvySpot.Presentation\BivvySpot.Presentation.csproj", "{81FC30B2-C6EE-4A7A-8D1B-DE3F2175F4F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8350987F-AADC-41FE-9C32-5C81AB70A5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8350987F-AADC-41FE-9C32-5C81AB70A5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8350987F-AADC-41FE-9C32-5C81AB70A5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8350987F-AADC-41FE-9C32-5C81AB70A5C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{116EA569-C39C-4249-BCF2-00537F111FFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{116EA569-C39C-4249-BCF2-00537F111FFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{116EA569-C39C-4249-BCF2-00537F111FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{116EA569-C39C-4249-BCF2-00537F111FFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFDCF594-FA23-465D-A4F9-3F1DA9C0AF03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFDCF594-FA23-465D-A4F9-3F1DA9C0AF03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFDCF594-FA23-465D-A4F9-3F1DA9C0AF03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFDCF594-FA23-465D-A4F9-3F1DA9C0AF03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDDE9945-B138-4899-BB15-F8E6BEE1565E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDDE9945-B138-4899-BB15-F8E6BEE1565E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDDE9945-B138-4899-BB15-F8E6BEE1565E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDDE9945-B138-4899-BB15-F8E6BEE1565E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34F0474B-E1A1-41B2-8BB6-9113EEDFA081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34F0474B-E1A1-41B2-8BB6-9113EEDFA081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34F0474B-E1A1-41B2-8BB6-9113EEDFA081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34F0474B-E1A1-41B2-8BB6-9113EEDFA081}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81FC30B2-C6EE-4A7A-8D1B-DE3F2175F4F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81FC30B2-C6EE-4A7A-8D1B-DE3F2175F4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81FC30B2-C6EE-4A7A-8D1B-DE3F2175F4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81FC30B2-C6EE-4A7A-8D1B-DE3F2175F4F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8350987F-AADC-41FE-9C32-5C81AB70A5C8} = {B51F14C1-757E-45C4-98FE-D23DA598D24C}
+		{116EA569-C39C-4249-BCF2-00537F111FFB} = {B51F14C1-757E-45C4-98FE-D23DA598D24C}
+		{BFDCF594-FA23-465D-A4F9-3F1DA9C0AF03} = {B51F14C1-757E-45C4-98FE-D23DA598D24C}
+		{DDDE9945-B138-4899-BB15-F8E6BEE1565E} = {B51F14C1-757E-45C4-98FE-D23DA598D24C}
+		{34F0474B-E1A1-41B2-8BB6-9113EEDFA081} = {B51F14C1-757E-45C4-98FE-D23DA598D24C}
+		{81FC30B2-C6EE-4A7A-8D1B-DE3F2175F4F0} = {B51F14C1-757E-45C4-98FE-D23DA598D24C}
+	EndGlobalSection
+EndGlobal
