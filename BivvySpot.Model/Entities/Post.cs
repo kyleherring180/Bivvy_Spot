@@ -18,7 +18,7 @@ public class Post : BaseEntity
     public string Title { get; set; } = null!;
     public string? RouteName { get; set; }
     public string Body { get; set; } = null!;
-    public string? Season { get; set; } // Consider a month bitmask later
+    public Season Season { get; set; } // Consider a month bitmask later
     public int ElevationGain { get; set; } // meters
     public int Duration { get; set; } // minutes
     public int LikeCount { get; set; }
