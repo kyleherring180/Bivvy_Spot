@@ -9,4 +9,6 @@ public class PostLocation
 
     public Post Post { get; set; } = null!;
     public Location Location { get; set; } = null!;
+    
+    private PostLocation() { /* private constructor for EF */}
 }

@@ -8,4 +8,6 @@ public class PostDifficulty
 
     public Difficulty Difficulty { get; set; } = null!;
     public Post Post { get; set; } = null!;
+    
+    private PostDifficulty() { /* private constructor for EF */}
 }

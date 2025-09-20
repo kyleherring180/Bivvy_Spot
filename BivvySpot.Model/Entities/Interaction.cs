@@ -11,4 +11,6 @@ public class Interaction : BaseEntity
 
     public User User { get; set; } = null!;
     public Post Post { get; set; } = null!;
+    
+    private Interaction() { /* private constructor for EF */}
 }

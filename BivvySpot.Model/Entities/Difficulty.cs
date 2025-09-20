@@ -7,4 +7,6 @@ public class Difficulty
     public Guid Id { get; set; }
     public ActivityType ActivityType { get; set; }
     public string DifficultyRating { get; set; } = null!;
+    
+    private Difficulty() { /* private constructor for EF */}
 }

@@ -8,4 +8,6 @@ public class LocationAltName
     public string? Language { get; set; }
 
     public Location Location { get; set; } = null!;
+    
+    private LocationAltName() { /* private constructor for EF */}
 }

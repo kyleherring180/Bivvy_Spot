@@ -20,4 +20,6 @@ public class GpxTrack : BaseEntity
     public DateTimeOffset? DeletedDate { get; set; }
 
     public Post Post { get; set; } = null!;
+    
+    private GpxTrack() { /* private constructor for EF */}
 }

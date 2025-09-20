@@ -14,4 +14,6 @@ public class PostPhoto : BaseEntity
     public DateTimeOffset? DeletedDate { get; set; }
 
     public Post Post { get; set; } = null!;
+    
+    private PostPhoto() { /* private constructor for EF */}
 }

@@ -18,4 +18,6 @@ public class Report : BaseEntity
     public Post Post { get; set; } = null!;
     public User Reporter { get; set; } = null!;
     public User? Resolver { get; set; }
+    
+    private Report() { /* private constructor for EF */}
 }
