@@ -7,17 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Extensions\" />
-      <Folder Include="Repositories\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="9.0.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BivvySpot.Application\BivvySpot.Application.csproj" />
       <ProjectReference Include="..\BivvySpot.Model\BivvySpot.Model.csproj" />
     </ItemGroup>
 

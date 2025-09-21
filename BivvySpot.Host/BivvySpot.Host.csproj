@@ -4,17 +4,19 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <InvariantGlobalization>true</InvariantGlobalization>
+        <InvariantGlobalization>false</InvariantGlobalization>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.20" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="9.0.9" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
@@ -22,6 +24,11 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BivvySpot.Data\BivvySpot.Data.csproj" />
+      <ProjectReference Include="..\BivvySpot.Presentation\BivvySpot.Presentation.csproj" />
     </ItemGroup>
 
 </Project>

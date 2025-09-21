@@ -1,4 +1,6 @@
+using BivvySpot.Data.Configuration;
 using BivvySpot.Model.Entities;
+using BivvySpot.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace BivvySpot.Data;
@@ -32,6 +34,14 @@ public class BivvySpotContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         ApplyGeneralSettings(modelBuilder);
+
+        modelBuilder.ConfigureDictionaryTable<ActivityType>();
+        modelBuilder.ConfigureDictionaryTable<GpxStatus>();
+        modelBuilder.ConfigureDictionaryTable<InteractionType>();
+        modelBuilder.ConfigureDictionaryTable<LocationType>();
+        modelBuilder.ConfigureDictionaryTable<PostStatus>();
+        modelBuilder.ConfigureDictionaryTable<ReportStatus>();
+        modelBuilder.ConfigureDictionaryTable<Season>();
     }
     
     private static void ApplyGeneralSettings(ModelBuilder modelBuilder)

@@ -6,4 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BivvySpot.Application\BivvySpot.Application.csproj" />
+      <ProjectReference Include="..\BivvySpot.Model\BivvySpot.Model.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
 </Project>
