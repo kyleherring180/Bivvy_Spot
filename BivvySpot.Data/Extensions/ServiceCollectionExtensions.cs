@@ -21,6 +21,8 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddDataWithoutContext(this IServiceCollection services)
     {
-        return services.AddScoped<IUserRepository, UserRepository>();
+        return services
+            .AddScoped<IPostRepository, PostRepository>()
+            .AddScoped<IUserRepository, UserRepository>();
     }
 }

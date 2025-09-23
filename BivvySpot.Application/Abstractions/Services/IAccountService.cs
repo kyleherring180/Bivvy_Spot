@@ -1,3 +1,5 @@
+using BivvySpot.Contracts.v1.Request;
+using BivvySpot.Contracts.v1.Response;
 using BivvySpot.Model.Dtos;
 
 namespace BivvySpot.Application.Abstractions.Services;

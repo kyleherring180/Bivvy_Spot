@@ -1,3 +1,5 @@
+using BivvySpot.Application.Abstractions.Security;
+using BivvySpot.Presentation.Security;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +26,13 @@ public static class ServiceCollectionExtensions
         // services.Configure<ApiBehaviorOptions>(o => o.SuppressInferBindingSourcesForParameters = true);
 
         return services;
+    }
+
+    public static IServiceCollection AddSecurity(this IServiceCollection services)
+    {
+        return services
+            .AddHttpContextAccessor()
+            .AddScoped<IAuthContextProvider, AuthContextProvider>();
     }
 
     // Empty marker type to get this assembly without referencing a specific controller type

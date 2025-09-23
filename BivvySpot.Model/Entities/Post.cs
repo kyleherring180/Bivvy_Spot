@@ -38,4 +38,48 @@ public class Post : BaseEntity
     public IReadOnlyCollection<PostDifficulty> PostDifficulties => _postDifficulties.AsReadOnly();
     
     private Post() { /* private constructor for EF */}
+    
+    public Post(
+        Guid userId,
+        string title,
+        string body,
+        Season season,
+        int elevationGain,
+        int duration,
+        string? routeName = null)
+    {
+        Id = Guid.NewGuid();
+        UserId = userId;
+        Title = title.Trim();
+        Body = body; // allow markdown
+        Season = season;
+        ElevationGain = Math.Max(0, elevationGain);
+        Duration = Math.Max(0, duration);
+        RouteName = string.IsNullOrWhiteSpace(routeName) ? null : routeName.Trim();
+        LikeCount = 0;
+        SaveCount = 0;
+        Status = PostStatus.Draft;
+
+        SetCreatedDate();
+        UpdatedDate = CreatedDate;
+    }
+
+    public void Update(
+        string? title = null,
+        string? routeName = null,
+        string? body = null,
+        Season? season = null,
+        int? elevationGain = null,
+        int? duration = null,
+        PostStatus? status = null)
+    {
+        if (!string.IsNullOrWhiteSpace(title)) Title = title.Trim();
+        if (routeName is not null) RouteName = string.IsNullOrWhiteSpace(routeName) ? null : routeName.Trim();
+        if (body is not null) Body = body;
+        if (season.HasValue) Season = season.Value;
+        if (elevationGain.HasValue) ElevationGain = Math.Max(0, elevationGain.Value);
+        if (duration.HasValue) Duration = Math.Max(0, duration.Value);
+        if (status.HasValue) Status = status.Value;
+        UpdatedDate = DateTimeOffset.UtcNow;
+    }
 }

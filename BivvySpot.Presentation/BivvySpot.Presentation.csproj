@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BivvySpot.Application\BivvySpot.Application.csproj" />
+      <ProjectReference Include="..\BivvySpot.Contracts\BivvySpot.Contracts.csproj" />
       <ProjectReference Include="..\BivvySpot.Model\BivvySpot.Model.csproj" />
     </ItemGroup>
 

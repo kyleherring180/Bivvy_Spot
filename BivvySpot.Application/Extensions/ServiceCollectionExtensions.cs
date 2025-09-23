@@ -16,6 +16,7 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddApplicationWithoutConfiguration(this IServiceCollection services)
     {
         return services
-            .AddScoped<IAccountService, AccountService>();
+            .AddScoped<IAccountService, AccountService>()
+            .AddScoped<IPostService, PostService>();
     }
 }

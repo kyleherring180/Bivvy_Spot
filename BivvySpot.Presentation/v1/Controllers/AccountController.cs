@@ -1,4 +1,6 @@
 using BivvySpot.Application.Abstractions.Services;
+using BivvySpot.Contracts.v1.Request;
+using BivvySpot.Contracts.v1.Response;
 using BivvySpot.Model.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

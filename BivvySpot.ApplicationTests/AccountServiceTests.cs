@@ -1,5 +1,6 @@
 using BivvySpot.Application.Abstractions.Repositories;
 using BivvySpot.Application.Services;
+using BivvySpot.Contracts.v1.Request;
 using BivvySpot.Model.Dtos;          // AuthContext, AccountProfileResponse, UpdateAccountProfileRequest
 using BivvySpot.Model.Entities;     // User
 using Moq;

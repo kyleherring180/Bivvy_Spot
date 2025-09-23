@@ -57,7 +57,8 @@ builder.Services.AddDbContext<BivvySpotContext>(o =>
 builder.Services
     .AddData(connectionString)
     .AddApplication(builder.Configuration)
-    .AddPresentation();
+    .AddPresentation()
+    .AddSecurity();
 
 // Auth0 JWT Bearer
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
