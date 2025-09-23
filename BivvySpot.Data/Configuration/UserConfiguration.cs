@@ -11,8 +11,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedNever();
 
-        builder.Property(x => x.Username).HasMaxLength(100).IsRequired();
-        builder.Property(x => x.Email).HasMaxLength(256).IsRequired();
+        builder.Property(x => x.Username).HasMaxLength(100);
+        builder.Property(x => x.Email).HasMaxLength(256);
 
         // Optional new identity fields (if present on your model)
         builder.Property<string?>("AuthProvider").HasMaxLength(64);

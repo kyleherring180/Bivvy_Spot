@@ -20,6 +20,9 @@ public class UserRepository(BivvySpotContext dbContext) : IUserRepository
         dbContext.Users.Add(user);
         return Task.CompletedTask;
     }
+    
+    public Task<bool> UsernameExistsAsync(string username, CancellationToken ct) =>
+        dbContext.Users.AnyAsync(u => u.Username == username && u.DeletedDate == null, ct);
 
     public Task SaveChangesAsync(CancellationToken ct) => dbContext.SaveChangesAsync(ct);
 }

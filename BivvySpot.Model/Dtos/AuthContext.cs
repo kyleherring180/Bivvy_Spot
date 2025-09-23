@@ -5,12 +5,11 @@ namespace BivvySpot.Model.Dtos;
 // Auth context built from Auth0 JWT
 public record AuthContext(string? Provider, string? Subject, string? Email, string? DisplayName)
 {
-    public bool HasAnyKey => (!string.IsNullOrWhiteSpace(Subject) && !string.IsNullOrWhiteSpace(Provider))
-                             || !string.IsNullOrWhiteSpace(Email);
+    public bool HasAnyKey => !string.IsNullOrWhiteSpace(Subject) && !string.IsNullOrWhiteSpace(Provider);
 
     public bool IsValid(out string error)
     {
-        if (!HasAnyKey) { error = "Token missing 'sub' or 'email' claim."; return false; }
+        if (!HasAnyKey) { error = "Token missing 'sub' claim."; return false; }
         error = string.Empty; return true;
     }
 
