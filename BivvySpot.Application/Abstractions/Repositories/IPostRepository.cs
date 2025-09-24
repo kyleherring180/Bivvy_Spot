@@ -6,5 +6,6 @@ public interface IPostRepository
 {
     Task AddAsync(Post post, CancellationToken ct);
     Task<Post> GetByIdForAuthorAsync(Guid postId, Guid authorUserId, CancellationToken ct);
+    Task<Post> GetPostByIdAsync(Guid postId);
     Task SaveChangesAsync(CancellationToken ct);
 }

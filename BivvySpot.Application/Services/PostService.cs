@@ -5,7 +5,7 @@ using BivvySpot.Model.Entities;
 
 namespace BivvySpot.Application.Services;
 
-public class PostService(IUserRepository users, IPostRepository posts) : IPostService
+public class PostService(IUserRepository userRepository, IPostRepository postRepository) : IPostService
 {
     public async Task<Post> CreateAsync(AuthContext auth, CreatePostDto dto, CancellationToken ct)
     {
@@ -22,15 +22,15 @@ public class PostService(IUserRepository users, IPostRepository posts) : IPostSe
             routeName: dto.RouteName
         );
 
-        await posts.AddAsync(post, ct);
-        await posts.SaveChangesAsync(ct);
+        await postRepository.AddAsync(post, ct);
+        await postRepository.SaveChangesAsync(ct);
         return post;
     }
 
     public async Task<Post> UpdateAsync(AuthContext auth, Guid postId, UpdatePostDto dto, CancellationToken ct)
     {
         var author = await RequireUserAsync(auth, ct);
-        var post = await posts.GetByIdForAuthorAsync(postId, author.Id, ct)
+        var post = await postRepository.GetByIdForAuthorAsync(postId, author.Id, ct)
                    ?? throw new KeyNotFoundException("Post not found or not owned by the current user.");
 
         // (Optional) optimistic concurrency with RowVersion if you expose it on BaseEntity.
@@ -39,12 +39,16 @@ public class PostService(IUserRepository users, IPostRepository posts) : IPostSe
         ValidateUpdate(dto);
         post.Update(dto.Title, dto.RouteName, dto.Body, dto.Season, dto.ElevationGain, dto.Duration, dto.Status);
 
-        await posts.SaveChangesAsync(ct);
+        await postRepository.SaveChangesAsync(ct);
         return post;
     }
 
+    public async Task<Post> GetPostByIdAsync(Guid postId)
+        => await postRepository.GetPostByIdAsync(postId)
+        ?? throw new KeyNotFoundException("Post not found.");
+
     private async Task<User> RequireUserAsync(AuthContext auth, CancellationToken ct)
-        => await users.FindByIdentityAsync(auth.Provider!, auth.Subject!, ct)
+        => await userRepository.FindByIdentityAsync(auth.Provider!, auth.Subject!, ct)
            ?? throw new KeyNotFoundException("Local user not found. Call /account/register first.");
 
     private static void ValidateCreate(CreatePostDto dto)

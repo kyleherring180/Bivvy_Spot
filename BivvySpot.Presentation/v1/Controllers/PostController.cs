@@ -31,5 +31,9 @@ public class PostController(IPostService postService, IAuthContextProvider authC
 
     // add a read method later if you like
     [HttpGet("{id:guid}")]
-    public IActionResult GetById(Guid id) => NotFound();
+    public async Task<ActionResult<PostResponse>> GetById(Guid id)
+    {
+        var result = await postService.GetPostByIdAsync(id);
+        return Ok(result.ToContract());
+    }
 }

@@ -15,5 +15,9 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
     public Task<Post> GetByIdForAuthorAsync(Guid postId, Guid authorUserId, CancellationToken ct) =>
         dbContext.Posts.SingleOrDefaultAsync(p => p.Id == postId && p.UserId == authorUserId && p.DeletedDate == null, ct)!;
 
+    public Task<Post> GetPostByIdAsync(Guid postId) => 
+        dbContext.Posts.SingleOrDefaultAsync(p => p.Id == postId)!;
+    
+
     public Task SaveChangesAsync(CancellationToken ct) => dbContext.SaveChangesAsync(ct);
 }
