@@ -18,7 +18,8 @@ public static class PostResponseExtensions
                 post.ElevationGain,
                 post.Duration,
                 post.Status.ToContract(),
-                post.UpdatedDate
+                post.UpdatedDate,
+                post.PostTags.ToContract()
                 );
     }
     
@@ -39,4 +40,9 @@ public static class PostResponseExtensions
         Model.Enums.PostStatus.Flagged => PostStatus.Flagged,
         _ => throw new ArgumentOutOfRangeException(nameof(status), $"Not expected post status value: {status}"),
     };
+    
+    public static IReadOnlyCollection<string> ToContract(this IEnumerable<Model.Entities.PostTag> postTags)
+    {
+        return postTags.Select(pt => pt.Tag.Name).ToList();
+    }
 }

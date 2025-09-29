@@ -19,5 +19,7 @@ public class PostTagConfiguration : IEntityTypeConfiguration<PostTag>
         builder.HasOne(x => x.Tag)
             .WithMany(t => t.PostTags)
             .HasForeignKey(x => x.TagId);
+        
+        builder.HasIndex(pt => new { pt.PostId, pt.TagId }).IsUnique();
     }
 }

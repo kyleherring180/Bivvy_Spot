@@ -7,8 +7,14 @@ public class Tag
     private readonly List<PostTag> _postTags = new();
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;
+    public string Slug { get; set; } = null!;
 
     public ReadOnlyCollection<PostTag> PostTags => _postTags.AsReadOnly();
     
     private Tag() { /* private constructor for EF */}
+    public Tag(string name)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+    }
 }

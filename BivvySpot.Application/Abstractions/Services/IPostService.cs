@@ -9,4 +9,5 @@ public interface IPostService
     Task<Post> CreateAsync(AuthContext auth, CreatePostDto dto, CancellationToken ct);
     Task<Post> UpdateAsync(AuthContext auth, Guid postId, UpdatePostDto dto, CancellationToken ct);
     Task<Post> GetPostByIdAsync(Guid postId);
+    Task<IEnumerable<Post>> GetPostsAsync(int page, int pageSize);
 }

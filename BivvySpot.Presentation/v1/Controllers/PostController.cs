@@ -28,12 +28,19 @@ public class PostController(IPostService postService, IAuthContextProvider authC
         var result = await postService.UpdateAsync(authContextProvider.GetCurrent(), id, req.ToModel(), ct);
         return Ok(result.ToContract());
     }
-
-    // add a read method later if you like
+    
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<PostResponse>> GetById(Guid id)
     {
         var result = await postService.GetPostByIdAsync(id);
         return Ok(result.ToContract());
     }
+    
+    [HttpGet()]
+    public async Task<ActionResult<PostResponse>> GetPosts([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        var results = await postService.GetPostsAsync(page, pageSize);
+        return Ok(results.Select(r => r.ToContract()));
+    }
+    
 }

@@ -11,4 +11,5 @@ public class CreatePostDto
     public int ElevationGain { get; set; }
     public int Duration { get; set; }
     public string? RouteName { get; set; }
+    public IReadOnlyCollection<string>? Tags { get; set; }
 }
