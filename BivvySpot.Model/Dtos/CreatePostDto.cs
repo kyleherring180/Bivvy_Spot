@@ -12,4 +12,5 @@ public class CreatePostDto
     public int Duration { get; set; }
     public string? RouteName { get; set; }
     public IReadOnlyCollection<string>? Tags { get; set; }
+    public IReadOnlyCollection<Guid>? LocationIds { get; set; }
 }

@@ -11,6 +11,10 @@ public interface IPostRepository
     Task<HashSet<Guid>> GetPostByTagIdsAsync(Guid postId, CancellationToken ct);
     Task AddTagToPostAsync(Guid postId, Guid tagId, CancellationToken ct);
     Task RemoveTagFromPostAsync(Guid postId, Guid tagId, CancellationToken ct);
+    Task<HashSet<Guid>> GetPostLocationIdsAsync(Guid postId, CancellationToken ct);
+    Task AddLocationToPostAsync(Guid postId, Guid locationId, int order, CancellationToken ct);
+    Task RemoveLocationFromPostAsync(Guid postId, Guid locationId, CancellationToken ct);
+    Task SetLocationOrderAsync(Guid postId, Guid locationId, int order, CancellationToken ct);
     Task SaveChangesAsync(CancellationToken ct);
     
 }

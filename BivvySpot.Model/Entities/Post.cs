@@ -13,21 +13,21 @@ public class Post : BaseEntity
     private readonly List<Report> _reports = new();
     private readonly List<PostDifficulty> _postDifficulties = new();
     
-    public Guid Id { get; set; }
-    public Guid UserId { get; set; }
-    public string Title { get; set; } = null!;
-    public string? RouteName { get; set; }
-    public string Body { get; set; } = null!;
-    public Season Season { get; set; } // Consider a month bitmask later
-    public int ElevationGain { get; set; } // meters
-    public int Duration { get; set; } // minutes
-    public int LikeCount { get; set; }
-    public int SaveCount { get; set; }
-    public DateTimeOffset UpdatedDate { get; set; }
-    public PostStatus Status { get; set; }
-    public DateTimeOffset? DeletedDate { get; set; }
+    public Guid Id { get; init; }
+    public Guid UserId { get; private set; }
+    public string Title { get; private set; } = null!;
+    public string? RouteName { get; private set; }
+    public string Body { get; private set; } = null!;
+    public Season Season { get; private set; } // Consider a month bitmask later
+    public int ElevationGain { get; private set; } // meters
+    public int Duration { get; private set; } // minutes
+    public int LikeCount { get; private set; }
+    public int SaveCount { get; private set; }
+    public DateTimeOffset UpdatedDate { get; private set; }
+    public PostStatus Status { get; private set; }
+    public DateTimeOffset? DeletedDate { get; private set; }
 
-    public User User { get; set; } = null!;
+    public User User { get; private set; } = null!;
     public IReadOnlyCollection<PostPhoto> Photos => _photos.AsReadOnly();
     public IReadOnlyCollection<PostTag> PostTags => _postTags.AsReadOnly();
     public IReadOnlyCollection<Interaction> Interactions => _interactions.AsReadOnly();
@@ -88,5 +88,12 @@ public class Post : BaseEntity
         if (postTag.PostId != Id) throw new ArgumentException("PostTag.PostId does not match Post.Id");
         if (_postTags.Any(pt => pt.TagId == postTag.TagId)) return; // already linked
         _postTags.Add(postTag);
+    }
+
+    public void AddPostLocation(PostLocation postLocation)
+    {
+        if (postLocation.PostId != Id) throw new ArgumentException("PostLocation.PostId does not match Post.Id");
+        if (_postLocations.Any(pl => pl.LocationId == postLocation.LocationId)) return; // already linked
+        _postLocations.Add(postLocation);
     }
 }

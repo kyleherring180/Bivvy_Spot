@@ -9,5 +9,6 @@ public record CreatePostRequest(
     int ElevationGain, 
     int Duration, 
     string? RouteName,
-    IReadOnlyCollection<string>? Tags
+    IReadOnlyCollection<string>? Tags,
+    IReadOnlyCollection<Guid>? LocationIds
     );

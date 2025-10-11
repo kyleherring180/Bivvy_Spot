@@ -15,7 +15,8 @@ public static class PostExtensions
             Season = req.Season.ToModel(),
             ElevationGain = req.ElevationGain,
             Duration = req.Duration,
-            Tags = req.Tags?.ToList() ?? new List<string>()
+            Tags = req.Tags?.ToList() ?? new List<string>(),
+            LocationIds = req.LocationIds?.ToList()
         };
     }
     
@@ -31,7 +32,8 @@ public static class PostExtensions
             Duration = req.Duration,
             Status = req.Status?.ToModel(),
             Tags = req.Tags?.ToList() ?? new List<string>(),
-            RowVersion = req.RowVersion
+            RowVersion = req.RowVersion,
+            LocationIds = req.LocationIds?.ToList()
         };
     }
     

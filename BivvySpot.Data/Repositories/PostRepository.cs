@@ -41,5 +41,31 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
         if (link is not null) dbContext.PostTags.Remove(link);
     }
 
+    public async Task<HashSet<Guid>> GetPostLocationIdsAsync(Guid postId, CancellationToken ct) =>
+        (await dbContext.PostLocations.Where(x => x.PostId == postId)
+            .Select(x => x.LocationId).ToListAsync(ct)).ToHashSet();
+
+    public Task AddLocationToPostAsync(Guid postId, Guid locationId, int order, CancellationToken ct)
+    {
+        dbContext.PostLocations.Add(new PostLocation(postId, locationId, order));
+        return Task.CompletedTask;
+    }
+
+    public async Task RemoveLocationFromPostAsync(Guid postId, Guid locationId, CancellationToken ct)
+    {
+        var link = await dbContext.PostLocations.SingleOrDefaultAsync(x => x.PostId == postId && x.LocationId == locationId, ct);
+        if (link is not null) dbContext.PostLocations.Remove(link);
+    }
+
+    public async Task SetLocationOrderAsync(Guid postId, Guid locationId, int order, CancellationToken ct)
+    {
+        var existing = await dbContext.PostLocations.SingleOrDefaultAsync(x => x.PostId == postId && x.LocationId == locationId, ct);
+        if (existing is not null)
+        {
+            dbContext.PostLocations.Remove(existing);
+        }
+        dbContext.PostLocations.Add(new PostLocation(postId, locationId, Math.Max(0, order)));
+    }
+
     public Task SaveChangesAsync(CancellationToken ct) => dbContext.SaveChangesAsync(ct);
 }

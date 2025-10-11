@@ -13,4 +13,5 @@ public class UpdatePostDto
     public PostStatus? Status { get; set; }
     public IReadOnlyCollection<string>? Tags { get; set; }
     public byte[]? RowVersion { get; set; }
+    public IReadOnlyCollection<Guid>? LocationIds { get; set; }
 }

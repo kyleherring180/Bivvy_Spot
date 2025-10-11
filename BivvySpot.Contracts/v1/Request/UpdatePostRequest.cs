@@ -11,5 +11,6 @@ public record UpdatePostRequest(
     string? RouteName,
     PostStatus? Status,
     byte[]? RowVersion,
-    IReadOnlyCollection<string>? Tags
+    IReadOnlyCollection<string>? Tags,
+    IReadOnlyCollection<Guid>? LocationIds
     );

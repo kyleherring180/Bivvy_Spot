@@ -33,6 +33,9 @@ public class PostService(
         if (dto.Tags is { Count: > 0 })
             await UpsertAndLinkTagsAsync(post.Id, dto.Tags, ct);
         
+        if (dto.LocationIds is { Count: > 0 })
+            await LinkLocationsAsync(post.Id, dto.LocationIds, ct);
+        
         await postRepository.SaveChangesAsync(ct);
         return post;
     }
@@ -53,6 +56,11 @@ public class PostService(
         {
             // Replace entire tag set to match incoming collection
             await ReplaceTagsAsync(post.Id, tags, ct);
+        }
+
+        if (dto.LocationIds is { } locationIds)
+        {
+            await ReplaceLocationsAsync(post.Id, locationIds, ct);
         }
 
         await postRepository.SaveChangesAsync(ct);
@@ -157,5 +165,54 @@ public class PostService(
         return msg.Contains("UNIQUE", StringComparison.OrdinalIgnoreCase)
                || msg.Contains("2601") // Cannot insert duplicate key row in object with unique index
                || msg.Contains("2627"); // Violation of UNIQUE KEY constraint
+    }
+
+    private async Task LinkLocationsAsync(Guid postId, IReadOnlyCollection<Guid> locationIds, CancellationToken ct)
+    {
+        if (locationIds == null || locationIds.Count == 0) return;
+        var desired = locationIds.Where(id => id != Guid.Empty).ToList();
+        if (desired.Count == 0) return;
+
+        var current = await postRepository.GetPostLocationIdsAsync(postId, ct);
+
+        for (int i = 0; i < desired.Count; i++)
+        {
+            var locId = desired[i];
+            if (!current.Contains(locId))
+            {
+                await postRepository.AddLocationToPostAsync(postId, locId, i, ct);
+            }
+            else
+            {
+                await postRepository.SetLocationOrderAsync(postId, locId, i, ct);
+            }
+        }
+    }
+
+    private async Task ReplaceLocationsAsync(Guid postId, IReadOnlyCollection<Guid> locationIds, CancellationToken ct)
+    {
+        var desired = (locationIds ?? Array.Empty<Guid>()).Where(id => id != Guid.Empty).ToList();
+        var desiredSet = desired.ToHashSet();
+        var current = await postRepository.GetPostLocationIdsAsync(postId, ct);
+
+        // Remove links that are no longer desired
+        foreach (var removeId in current.Except(desiredSet))
+        {
+            await postRepository.RemoveLocationFromPostAsync(postId, removeId, ct);
+        }
+
+        // Add missing and set order for all desired
+        for (int i = 0; i < desired.Count; i++)
+        {
+            var locId = desired[i];
+            if (!current.Contains(locId))
+            {
+                await postRepository.AddLocationToPostAsync(postId, locId, i, ct);
+            }
+            else
+            {
+                await postRepository.SetLocationOrderAsync(postId, locId, i, ct);
+            }
+        }
     }
 }
