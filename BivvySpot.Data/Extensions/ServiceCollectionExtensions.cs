@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddScoped<IPostRepository, PostRepository>()
-            .AddScoped<IUserRepository, UserRepository>();
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<ITagRepository, TagRepository>();
     }
 }
