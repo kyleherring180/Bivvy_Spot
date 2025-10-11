@@ -1,5 +1,6 @@
 using BivvySpot.Application.Abstractions.Repositories;
 using BivvySpot.Application.Abstractions.Services;
+using BivvySpot.Application.Utils;
 using BivvySpot.Model.Dtos;
 using BivvySpot.Model.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,12 @@ public class PostService(
 
         ValidateUpdate(dto);
         post.Update(dto.Title, dto.RouteName, dto.Body, dto.Season, dto.ElevationGain, dto.Duration, dto.Status);
+
+        if (dto.Tags is { } tags)
+        {
+            // Replace entire tag set to match incoming collection
+            await ReplaceTagsAsync(post.Id, tags, ct);
+        }
 
         await postRepository.SaveChangesAsync(ct);
         return post;
@@ -114,7 +121,7 @@ public class PostService(
 
     private async Task ReplaceTagsAsync(Guid postId, IReadOnlyCollection<string> rawNames, CancellationToken ct)
     {
-        var norm = Tag.NormalizeTags(rawNames); // slug -> (name, slug)
+        var norm = TagNormalizer.Normalize(rawNames); // slug -> (name, slug)
         var existingBySlug = await tagRepository.FindBySlugsAsync(norm.Keys, ct);
 
         foreach (var (slug, pair) in norm)

@@ -5,7 +5,7 @@ namespace BivvySpot.Presentation.v1.MapToModel;
 
 public static class PostExtensions
 {
-    public static CreatePostDto ToModel(this Contracts.v1.Request.CreatePostRequest req)
+    public static CreatePostDto ToDto(this Contracts.v1.Request.CreatePostRequest req)
     {
         return new CreatePostDto
         {
@@ -14,11 +14,12 @@ public static class PostExtensions
             Body = req.Body,
             Season = req.Season.ToModel(),
             ElevationGain = req.ElevationGain,
-            Duration = req.Duration
+            Duration = req.Duration,
+            Tags = req.Tags?.ToList() ?? new List<string>()
         };
     }
     
-    public static UpdatePostDto ToModel(this Contracts.v1.Request.UpdatePostRequest req)
+    public static UpdatePostDto ToDto(this Contracts.v1.Request.UpdatePostRequest req)
     {
         return new UpdatePostDto
         {
@@ -29,6 +30,7 @@ public static class PostExtensions
             ElevationGain = req.ElevationGain,
             Duration = req.Duration,
             Status = req.Status?.ToModel(),
+            Tags = req.Tags?.ToList() ?? new List<string>(),
             RowVersion = req.RowVersion
         };
     }

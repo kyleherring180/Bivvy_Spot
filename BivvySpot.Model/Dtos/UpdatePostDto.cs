@@ -11,5 +11,6 @@ public class UpdatePostDto
     public int? Duration { get; set; }
     public string? RouteName { get; set; }
     public PostStatus? Status { get; set; }
+    public IReadOnlyCollection<string>? Tags { get; set; }
     public byte[]? RowVersion { get; set; }
 }

@@ -15,7 +15,7 @@ public class Tag
     public string Name { get; private set; } = null!;
     public string Slug { get; private set; } = null!;
 
-    public ReadOnlyCollection<PostTag> PostTags => _postTags.AsReadOnly();
+    public IReadOnlyCollection<PostTag> PostTags => _postTags.AsReadOnly();
     
     private Tag() { /* private constructor for EF */}
     public Tag(string name)
@@ -23,6 +23,13 @@ public class Tag
         Id = Guid.NewGuid();
         Name = name.Trim();
         Slug = Slugify(Name);
+    }
+    
+    public void AddPostTag(PostTag postTag)
+    {
+        if (postTag == null) throw new ArgumentNullException(nameof(postTag));
+        if (!_postTags.Contains(postTag))
+            _postTags.Add(postTag);
     }
 
     public static Dictionary<string,(string name,string slug)> NormalizeTags(IEnumerable<string> names)
@@ -38,7 +45,7 @@ public class Tag
         return dict;
     }
 
-    private static string Slugify(string input, int maxLen = 64)
+    public static string Slugify(string input, int maxLen = 64)
     {
         if (string.IsNullOrWhiteSpace(input)) return "tag";
         var s = input.Trim().ToLowerInvariant();

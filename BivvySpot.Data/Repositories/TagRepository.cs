@@ -16,7 +16,7 @@ public class TagRepository(BivvySpotContext dbContext) :ITagRepository
 
     public Task AddAsync(Tag tag, CancellationToken ct)
     {
-        dbContext.Tags.Add(tag);
+        dbContext.Tags.AddAsync(tag, ct);
         return Task.CompletedTask;
     }
 

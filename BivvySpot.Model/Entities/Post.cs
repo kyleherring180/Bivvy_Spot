@@ -82,4 +82,11 @@ public class Post : BaseEntity
         if (status.HasValue) Status = status.Value;
         UpdatedDate = DateTimeOffset.UtcNow;
     }
+
+    public void AddPostTag(PostTag postTag)
+    {
+        if (postTag.PostId != Id) throw new ArgumentException("PostTag.PostId does not match Post.Id");
+        if (_postTags.Any(pt => pt.TagId == postTag.TagId)) return; // already linked
+        _postTags.Add(postTag);
+    }
 }

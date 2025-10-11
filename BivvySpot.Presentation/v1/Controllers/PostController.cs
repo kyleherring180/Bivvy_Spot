@@ -17,7 +17,7 @@ public class PostController(IPostService postService, IAuthContextProvider authC
     [Authorize]
     public async Task<ActionResult<PostResponse>> Create([FromBody] CreatePostRequest req, CancellationToken ct)
     {
-        var result = await postService.CreateAsync(authContextProvider.GetCurrent(), req.ToModel(), ct);
+        var result = await postService.CreateAsync(authContextProvider.GetCurrent(), req.ToDto(), ct);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result.ToContract());
     }
 
@@ -25,7 +25,7 @@ public class PostController(IPostService postService, IAuthContextProvider authC
     [Authorize]
     public async Task<ActionResult<PostResponse>> Update(Guid id, [FromBody] UpdatePostRequest req, CancellationToken ct)
     {
-        var result = await postService.UpdateAsync(authContextProvider.GetCurrent(), id, req.ToModel(), ct);
+        var result = await postService.UpdateAsync(authContextProvider.GetCurrent(), id, req.ToDto(), ct);
         return Ok(result.ToContract());
     }
     

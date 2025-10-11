@@ -11,10 +11,11 @@ public class PostTag
     
     private PostTag() { /* private constructor for EF */}
     
-    public PostTag(Guid tagId, Guid postId)
+    // Maintain a clear parameter order to avoid confusion: (postId, tagId)
+    public PostTag(Guid postId, Guid tagId)
     {
         Id = Guid.NewGuid();
-        TagId = tagId;
         PostId = postId;
+        TagId = tagId;
     }
 }
