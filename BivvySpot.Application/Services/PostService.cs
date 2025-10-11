@@ -1,6 +1,5 @@
 using BivvySpot.Application.Abstractions.Repositories;
 using BivvySpot.Application.Abstractions.Services;
-using BivvySpot.Application.Extensions;
 using BivvySpot.Model.Dtos;
 using BivvySpot.Model.Entities;
 using Microsoft.EntityFrameworkCore;

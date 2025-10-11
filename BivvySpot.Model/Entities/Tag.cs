@@ -11,9 +11,9 @@ public class Tag
     private static readonly Regex Dashes     = new("\\-+", RegexOptions.Compiled);
 
     private readonly List<PostTag> _postTags = new();
-    public Guid Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string Slug { get; set; } = null!;
+    public Guid Id { get; init; }
+    public string Name { get; private set; } = null!;
+    public string Slug { get; private set; } = null!;
 
     public ReadOnlyCollection<PostTag> PostTags => _postTags.AsReadOnly();
     
