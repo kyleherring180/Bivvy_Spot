@@ -80,7 +80,7 @@ public class PostService(
     
     private async Task UpsertAndLinkTagsAsync(Guid postId, IReadOnlyCollection<string> rawNames, CancellationToken ct)
     {
-        var norm = NormalizeTags(rawNames); // slug -> (name, slug)
+        var norm = Tag.NormalizeTags(rawNames); // slug -> (name, slug)
         if (norm.Count == 0) return;
 
         // 1) Load existing tags by slug
@@ -115,7 +115,7 @@ public class PostService(
 
     private async Task ReplaceTagsAsync(Guid postId, IReadOnlyCollection<string> rawNames, CancellationToken ct)
     {
-        var norm = NormalizeTags(rawNames); // slug -> (name, slug)
+        var norm = Tag.NormalizeTags(rawNames); // slug -> (name, slug)
         var existingBySlug = await tagRepository.FindBySlugsAsync(norm.Keys, ct);
 
         foreach (var (slug, pair) in norm)
@@ -145,19 +145,6 @@ public class PostService(
             await postRepository.RemoveTagFromPostAsync(postId, removeId, ct);
     }
 
-    private static Dictionary<string,(string name,string slug)> NormalizeTags(IEnumerable<string> names)
-    {
-        var dict = new Dictionary<string,(string,string)>(StringComparer.OrdinalIgnoreCase);
-        foreach (var raw in names)
-        {
-            if (string.IsNullOrWhiteSpace(raw)) continue;
-            var name = raw.Trim();
-            var slug = SlugUtil.Slugify(name);
-            dict[slug] = (name, slug);
-        }
-        return dict;
-    }
-    
     private static bool IsUniqueViolation(DbUpdateException ex)
     {
         var msg = ex.GetBaseException().Message;
