@@ -1,5 +1,7 @@
+using BivvySpot.Application.Abstractions.Infrastructure;
 using BivvySpot.Application.Abstractions.Services;
 using BivvySpot.Application.Services;
+using BivvySpot.Application.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +19,8 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddScoped<IAccountService, AccountService>()
-            .AddScoped<IPostService, PostService>();
+            .AddScoped<IPostService, PostService>()
+            .AddScoped<ILocationService, LocationService>()
+            .AddScoped<IGeometryParser, GeoJsonGeometryParser>();
     }
 }

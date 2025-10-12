@@ -191,7 +191,7 @@ public class PostService(
 
     private async Task ReplaceLocationsAsync(Guid postId, IReadOnlyCollection<Guid> locationIds, CancellationToken ct)
     {
-        var desired = (locationIds ?? Array.Empty<Guid>()).Where(id => id != Guid.Empty).ToList();
+        var desired = (locationIds ?? []).Where(id => id != Guid.Empty).ToList();
         var desiredSet = desired.ToHashSet();
         var current = await postRepository.GetPostLocationIdsAsync(postId, ct);
 

@@ -27,6 +27,7 @@ public class BivvySpotContext : DbContext
     public DbSet<PostComment> PostComments { get; set; }
     public DbSet<Report> Reports { get; set; }
     public DbSet<LocationAltName> LocationAltNames { get; set; }
+    public DbSet<LocationSuggestion> LocationSuggestions { get; set; }
     public DbSet<Difficulty> Difficulties { get; set; }
     public DbSet<PostDifficulty> PostDifficulties { get; set; }
     
@@ -42,6 +43,7 @@ public class BivvySpotContext : DbContext
         modelBuilder.ConfigureDictionaryTable<PostStatus>();
         modelBuilder.ConfigureDictionaryTable<ReportStatus>();
         modelBuilder.ConfigureDictionaryTable<Season>();
+        modelBuilder.ConfigureDictionaryTable<SuggestionStatus>();
     }
     
     private static void ApplyGeneralSettings(ModelBuilder modelBuilder)

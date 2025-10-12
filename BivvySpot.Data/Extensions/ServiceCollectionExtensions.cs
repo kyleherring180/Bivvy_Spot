@@ -24,6 +24,8 @@ public static class ServiceCollectionExtensions
         return services
             .AddScoped<IPostRepository, PostRepository>()
             .AddScoped<IUserRepository, UserRepository>()
-            .AddScoped<ITagRepository, TagRepository>();
+            .AddScoped<ITagRepository, TagRepository>()
+            .AddScoped<ILocationRepository, LocationRepository>()
+            .AddScoped<ILocationSuggestionRepository, LocationSuggestionRepository>();
     }
 }

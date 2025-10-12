@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BivvySpot.Model\BivvySpot.Model.csproj" />
+    </ItemGroup>
+
 </Project>
