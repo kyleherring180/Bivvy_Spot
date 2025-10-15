@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using BivvySpot.Application.Extensions;
 using BivvySpot.Data;
 using BivvySpot.Data.Extensions;
@@ -9,6 +10,8 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("BivvySpot");
+
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -72,14 +75,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
         // Optional: nicer default for User.Identity.Name if you care
         // o.TokenValidationParameters = new TokenValidationParameters { NameClaimType = "name" };
+        o.TokenValidationParameters.RoleClaimType = "https://bivvyspot.io/roles";
     });
 
 builder.Services.AddAuthorization(options =>
 {
-    // Example permission policy (Auth0 "permissions" claim)
-    options.AddPolicy("posts:read", policy =>
+    // Permissions-based policy (comes from Auth0 RBAC)
+    options.AddPolicy("RequireAdminPermission", policy =>
         policy.RequireAssertion(ctx =>
-            ctx.User.Claims.Any(c => c.Type == "permissions" && c.Value.Contains("posts:read"))));
+            ctx.User.Claims.Any(c => c.Type == "permissions" && c.Value.Contains("admin:all"))));
+
+    // OR (optional) roles-based policy if you added roles claim via Action
+    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("admin"));
 });
 
 var app = builder.Build();

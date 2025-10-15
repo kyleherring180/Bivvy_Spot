@@ -40,7 +40,7 @@ public class LocationService(
     }
 
     // Any user can suggest
-    public async Task<Guid> SuggestAsync(AuthContext auth, CreateLocationSuggestionDto req, CancellationToken ct)
+    public async Task SuggestAsync(AuthContext auth, CreateLocationSuggestionDto req, CancellationToken ct)
     {
         if (!auth.HasAnyKey) throw new UnauthorizedAccessException();
 
@@ -55,7 +55,6 @@ public class LocationService(
         var s = new LocationSuggestion(user.Id, req.Name.Trim(), req.LocationType, point, req.CountryCode, req.ParentId, req.Note);
         await locationSuggestionsRepo.AddAsync(s, ct);
         await locationSuggestionsRepo.SaveChangesAsync(ct);
-        return s.Id;
     }
 
     // Moderator approval → create official Location

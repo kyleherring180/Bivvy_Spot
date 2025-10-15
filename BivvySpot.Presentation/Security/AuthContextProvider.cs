@@ -9,22 +9,33 @@ public sealed class AuthContextProvider(IHttpContextAccessor http) : IAuthContex
 {
     public AuthContext GetCurrent()
     {
-        var user = http.HttpContext?.User ?? new ClaimsPrincipal();
+        // Defensive: ensure we have a principal
+        var user = http.HttpContext?.User;
+        if (user == null || !user.Identity?.IsAuthenticated == true)
+            return new AuthContext(null, null, null, $"user-{Guid.NewGuid():N}");
 
-        // Keep raw claim names: ensure MapInboundClaims=false in JwtBearer setup
+        // sub (required to identify the user across logins)
         var sub = user.FindFirst("sub")?.Value
                   ?? user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+        // issuer → detect provider (Auth0 vs external)
         var iss = user.FindFirst("iss")?.Value ?? string.Empty;
         var provider = iss.Contains("auth0", StringComparison.OrdinalIgnoreCase) ? "auth0" : "external";
 
-        // Email is optional; may come from a namespaced claim if you added an Auth0 Action
-        var email = user.FindFirst("email")?.Value
-                    ?? user.FindFirst(ClaimTypes.Email)?.Value
-                    ?? user.FindFirst("https://bivvyspot/email")?.Value;
+        // EMAIL: prefer the namespaced claim you added via Auth0 Action
+        var email =
+            user.FindFirst("https://bivvyspot.io/email")?.Value   // <-- make sure your Action uses this exact key
+            ?? user.FindFirst("email")?.Value
+            ?? user.FindFirst(ClaimTypes.Email)?.Value;
 
         email = email?.Trim().ToLowerInvariant();
-        var name = (user.Identity?.Name ?? email ?? $"user-{Guid.NewGuid():N}").Trim();
+
+        // Friendly display name
+        var name = (user.FindFirst("name")?.Value
+                    ?? user.Identity?.Name
+                    ?? email
+                    ?? $"user-{Guid.NewGuid():N}")
+            .Trim();
 
         return new AuthContext(provider, sub, email, name);
     }
