@@ -247,6 +247,45 @@ public class PostService(
         return post;
     }
 
+    // Comments
+    public async Task<PostComment> AddCommentAsync(AuthContext auth, Guid postId, string body, Guid? parentCommentId, CancellationToken ct)
+    {
+        var user = await RequireUserAsync(auth, ct);
+        if (string.IsNullOrWhiteSpace(body)) throw new ArgumentException("Body is required.");
+        var post = await postRepository.GetPostByIdAsync(postId) ?? throw new KeyNotFoundException("Post not found.");
+
+        if (parentCommentId is not null)
+        {
+            var parent = post.Comments.SingleOrDefault(c => c.Id == parentCommentId && c.ParentCommentId == null && c.DeletedDate == null);
+            if (parent is null)
+                throw new InvalidOperationException("Parent comment not found or not top-level.");
+        }
+
+        var comment = new PostComment(post.Id, user.Id, body.Trim(), parentCommentId);
+        await postRepository.AddCommentAsync(comment, ct);
+        await postRepository.SaveChangesAsync(ct);
+        return comment;
+    }
+
+    public async Task<PostComment> EditCommentAsync(AuthContext auth, Guid postId, Guid commentId, string body, CancellationToken ct)
+    {
+        var user = await RequireUserAsync(auth, ct);
+        if (string.IsNullOrWhiteSpace(body)) throw new ArgumentException("Body is required.");
+        var post = await postRepository.GetPostByIdAsync(postId) ?? throw new KeyNotFoundException("Post not found.");
+
+        // Search in top-level and one-level replies
+        var all = post.Comments
+            .SelectMany(c => new[] { c }.Concat(c.Replies))
+            .Where(c => c.DeletedDate == null)
+            .ToList();
+        var comment = all.SingleOrDefault(c => c.Id == commentId) ?? throw new KeyNotFoundException("Comment not found.");
+        if (comment.UserId != user.Id) throw new UnauthorizedAccessException("You can only edit your own comments.");
+
+        comment.Edit(body);
+        await postRepository.SaveChangesAsync(ct);
+        return comment;
+    }
+
     // Reports
     public async Task<Report> ReportPostAsync(AuthContext auth, Guid postId, string reason, CancellationToken ct)
     {

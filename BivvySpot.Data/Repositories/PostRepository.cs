@@ -20,6 +20,8 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
             .Include(p => p.PostTags)
             .Include(p => p.PostLocations)
             .Include(p => p.Photos)
+            .Include(p => p.Comments)
+                .ThenInclude(c => c.Replies)
             .SingleOrDefaultAsync(p => p.Id == postId && p.UserId == authorUserId && p.DeletedDate == null, ct)!;
 
     public Task<Post> GetPostByIdAsync(Guid postId) => 
@@ -29,6 +31,8 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
             .Include(p => p.PostTags)
             .Include(p => p.PostLocations)
             .Include(p => p.Photos)
+            .Include(p => p.Comments)
+                .ThenInclude(c => c.Replies)
             .SingleOrDefaultAsync(p => p.Id == postId)!;
     
     public Task<IEnumerable<Post>> GetPostsAsync(int page, int pageSize) =>
@@ -95,6 +99,13 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
     public Task AddReportAsync(Report report, CancellationToken ct)
     {
         dbContext.Reports.Add(report);
+        return Task.CompletedTask;
+    }
+
+    // Comments
+    public Task AddCommentAsync(PostComment comment, CancellationToken ct)
+    {
+        dbContext.PostComments.Add(comment);
         return Task.CompletedTask;
     }
 

@@ -61,6 +61,23 @@ public class PostController(IPostService postService, IAuthContextProvider authC
         return Ok($"Interaction {req.InteractionType} removed from post {id}");
     }
 
+    // Comments
+    [HttpPost("{id:guid}/comments")]
+    [Authorize]
+    public async Task<IActionResult> AddComment(Guid id, [FromBody] AddCommentRequest req, CancellationToken ct)
+    {
+        var comment = await postService.AddCommentAsync(authContextProvider.GetCurrent(), id, req.Body, req.ParentCommentId, ct);
+        return Ok(new { commentId = comment.Id });
+    }
+
+    [HttpPut("{postId:guid}/comments/{commentId:guid}")]
+    [Authorize]
+    public async Task<IActionResult> EditComment(Guid postId, Guid commentId, [FromBody] EditCommentRequest req, CancellationToken ct)
+    {
+        await postService.EditCommentAsync(authContextProvider.GetCurrent(), postId, commentId, req.Body, ct);
+        return Ok($"Comment {commentId} updated on post {postId}");
+    }
+
     // Reports
     [HttpPost("{id:guid}/reports")]
     [Authorize]

@@ -19,6 +19,8 @@ public interface IPostRepository
     Task AddInteractionAsync(Interaction interaction, CancellationToken ct);
     Task RemoveInteractionAsync(Guid userId, Guid postId, InteractionType type, CancellationToken ct);
     Task AddReportAsync(Report report, CancellationToken ct);
+    // Comments
+    Task AddCommentAsync(PostComment comment, CancellationToken ct);
     Task SaveChangesAsync(CancellationToken ct);
     
 }
