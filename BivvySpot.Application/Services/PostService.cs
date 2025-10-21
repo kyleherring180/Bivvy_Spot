@@ -3,6 +3,7 @@ using BivvySpot.Application.Abstractions.Services;
 using BivvySpot.Application.Utils;
 using BivvySpot.Model.Dtos;
 using BivvySpot.Model.Entities;
+using BivvySpot.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace BivvySpot.Application.Services;
@@ -214,5 +215,35 @@ public class PostService(
                 await postRepository.SetLocationOrderAsync(postId, locId, i, ct);
             }
         }
+    }
+
+    public async Task<Post> AddInteractionAsync(AuthContext auth, Guid postId, InteractionType type, CancellationToken ct)
+    {
+        var user = await RequireUserAsync(auth, ct);
+        var post = await postRepository.GetPostByIdAsync(postId) ?? throw new KeyNotFoundException("Post not found.");
+
+        var exists = await postRepository.HasInteractionAsync(user.Id, postId, type, ct);
+        if (!exists)
+        {
+            var interaction = new Interaction(user.Id, postId, type);
+            await postRepository.AddInteractionAsync(interaction, ct);
+            
+            post.ApplyInteractionChange(type, +1);
+            await postRepository.SaveChangesAsync(ct);
+        }
+        return post;
+    }
+
+    public async Task<Post> RemoveInteractionAsync(AuthContext auth, Guid postId, InteractionType type, CancellationToken ct)
+    {
+        var user = await RequireUserAsync(auth, ct);
+        var post = await postRepository.GetPostByIdAsync(postId) ?? throw new KeyNotFoundException("Post not found.");
+
+        await postRepository.RemoveInteractionAsync(user.Id, postId, type, ct);
+        
+        post.ApplyInteractionChange(type, -1);
+        
+        await postRepository.SaveChangesAsync(ct);
+        return post;
     }
 }

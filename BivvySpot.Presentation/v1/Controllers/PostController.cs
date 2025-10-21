@@ -2,6 +2,7 @@ using BivvySpot.Application.Abstractions.Security;
 using BivvySpot.Application.Abstractions.Services;
 using BivvySpot.Contracts.v1.Request;
 using BivvySpot.Contracts.v1.Response;
+using BivvySpot.Model.Enums;
 using BivvySpot.Presentation.v1.MapToContract;
 using BivvySpot.Presentation.v1.MapToModel;
 using Microsoft.AspNetCore.Authorization;
@@ -41,6 +42,23 @@ public class PostController(IPostService postService, IAuthContextProvider authC
     {
         var results = await postService.GetPostsAsync(page, pageSize);
         return Ok(results.Select(r => r.ToContract()));
+    }
+
+    // Interactions
+    [HttpPost("{id:guid}/interactions")]
+    [Authorize]
+    public async Task<IActionResult> AddInteraction(Guid id, [FromBody] AddInteractionRequest req, CancellationToken ct)
+    {
+        await postService.AddInteractionAsync(authContextProvider.GetCurrent(), id, req.InteractionType, ct);
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}/interactions")]
+    [Authorize]
+    public async Task<IActionResult> RemoveInteraction(Guid id, [FromBody] AddInteractionRequest req, CancellationToken ct)
+    {
+        await postService.RemoveInteractionAsync(authContextProvider.GetCurrent(), id, req.InteractionType, ct);
+        return NoContent();
     }
     
 }

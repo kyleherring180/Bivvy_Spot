@@ -1,5 +1,6 @@
 using BivvySpot.Application.Abstractions.Repositories;
 using BivvySpot.Model.Entities;
+using BivvySpot.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace BivvySpot.Data.Repositories;
@@ -66,6 +67,25 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
         }
         dbContext.PostLocations.Add(new PostLocation(postId, locationId, Math.Max(0, order)));
     }
+
+    // Interactions
+    public async Task<bool> HasInteractionAsync(Guid userId, Guid postId, InteractionType type, CancellationToken ct)
+        => await dbContext.Interactions.AnyAsync(i => i.UserId == userId && i.PostId == postId && i.InteractionType == type, ct);
+
+    public Task AddInteractionAsync(Interaction interaction, CancellationToken ct)
+    {
+        dbContext.Interactions.Add(interaction);
+        return Task.CompletedTask;
+    }
+
+    public async Task RemoveInteractionAsync(Guid userId, Guid postId, InteractionType type, CancellationToken ct)
+    {
+        var entity = await dbContext.Interactions.SingleOrDefaultAsync(i => i.UserId == userId && i.PostId == postId && i.InteractionType == type, ct);
+        if (entity is not null) dbContext.Interactions.Remove(entity);
+    }
+
+    public Task<int> GetInteractionCountAsync(Guid postId, InteractionType type, CancellationToken ct)
+        => dbContext.Interactions.CountAsync(i => i.PostId == postId && i.InteractionType == type, ct);
 
     public Task SaveChangesAsync(CancellationToken ct) => dbContext.SaveChangesAsync(ct);
 }

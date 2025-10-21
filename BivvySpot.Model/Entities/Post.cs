@@ -96,4 +96,25 @@ public class Post : BaseEntity
         if (_postLocations.Any(pl => pl.LocationId == postLocation.LocationId)) return; // already linked
         _postLocations.Add(postLocation);
     }
+    
+    public void IncrementLikeCount() => LikeCount++;
+    public void DecrementLikeCount() => LikeCount = Math.Max(0, LikeCount - 1);
+    public void IncrementSaveCount() => SaveCount++;
+    public void DecrementSaveCount() => SaveCount = Math.Max(0, SaveCount - 1);
+
+    public void ApplyInteractionChange(InteractionType type, int delta)
+    {
+        switch (type)
+        {
+            case InteractionType.Like:
+                LikeCount = Math.Max(0, LikeCount + delta);
+                break;
+            case InteractionType.Save:
+                SaveCount = Math.Max(0, SaveCount + delta);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, "Unsupported interaction type");
+        }
+        UpdatedDate = DateTimeOffset.UtcNow;
+    }
 }
