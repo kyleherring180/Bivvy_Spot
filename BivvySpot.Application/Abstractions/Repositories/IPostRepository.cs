@@ -16,11 +16,9 @@ public interface IPostRepository
     Task AddLocationToPostAsync(Guid postId, Guid locationId, int order, CancellationToken ct);
     Task RemoveLocationFromPostAsync(Guid postId, Guid locationId, CancellationToken ct);
     Task SetLocationOrderAsync(Guid postId, Guid locationId, int order, CancellationToken ct);
-    // Interactions
-    Task<bool> HasInteractionAsync(Guid userId, Guid postId, InteractionType type, CancellationToken ct);
     Task AddInteractionAsync(Interaction interaction, CancellationToken ct);
     Task RemoveInteractionAsync(Guid userId, Guid postId, InteractionType type, CancellationToken ct);
-    Task<int> GetInteractionCountAsync(Guid postId, InteractionType type, CancellationToken ct);
+    Task AddReportAsync(Report report, CancellationToken ct);
     Task SaveChangesAsync(CancellationToken ct);
     
 }

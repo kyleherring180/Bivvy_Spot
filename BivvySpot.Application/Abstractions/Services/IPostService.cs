@@ -13,4 +13,7 @@ public interface IPostService
     Task<IEnumerable<Post>> GetPostsAsync(int page, int pageSize);
     Task<Post> AddInteractionAsync(AuthContext auth, Guid postId, InteractionType type, CancellationToken ct);
     Task<Post> RemoveInteractionAsync(AuthContext auth, Guid postId, InteractionType type, CancellationToken ct);
+    // Reports
+    Task<Report> ReportPostAsync(AuthContext auth, Guid postId, string reason, CancellationToken ct);
+    Task<Report> ModerateReportAsync(AuthContext auth, Guid postId, Guid reportId, ReportStatus status, string? moderatorNote, CancellationToken ct);
 }

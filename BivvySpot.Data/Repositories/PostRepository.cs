@@ -14,10 +14,22 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
     }
 
     public Task<Post> GetByIdForAuthorAsync(Guid postId, Guid authorUserId, CancellationToken ct) =>
-        dbContext.Posts.SingleOrDefaultAsync(p => p.Id == postId && p.UserId == authorUserId && p.DeletedDate == null, ct)!;
+        dbContext.Posts
+            .Include(p => p.Interactions)
+            .Include(p => p.Reports)
+            .Include(p => p.PostTags)
+            .Include(p => p.PostLocations)
+            .Include(p => p.Photos)
+            .SingleOrDefaultAsync(p => p.Id == postId && p.UserId == authorUserId && p.DeletedDate == null, ct)!;
 
     public Task<Post> GetPostByIdAsync(Guid postId) => 
-        dbContext.Posts.SingleOrDefaultAsync(p => p.Id == postId)!;
+        dbContext.Posts
+            .Include(p => p.Interactions)
+            .Include(p => p.Reports)
+            .Include(p => p.PostTags)
+            .Include(p => p.PostLocations)
+            .Include(p => p.Photos)
+            .SingleOrDefaultAsync(p => p.Id == postId)!;
     
     public Task<IEnumerable<Post>> GetPostsAsync(int page, int pageSize) =>
     dbContext.PostPhotos
@@ -68,10 +80,6 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
         dbContext.PostLocations.Add(new PostLocation(postId, locationId, Math.Max(0, order)));
     }
 
-    // Interactions
-    public async Task<bool> HasInteractionAsync(Guid userId, Guid postId, InteractionType type, CancellationToken ct)
-        => await dbContext.Interactions.AnyAsync(i => i.UserId == userId && i.PostId == postId && i.InteractionType == type, ct);
-
     public Task AddInteractionAsync(Interaction interaction, CancellationToken ct)
     {
         dbContext.Interactions.Add(interaction);
@@ -84,8 +92,11 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
         if (entity is not null) dbContext.Interactions.Remove(entity);
     }
 
-    public Task<int> GetInteractionCountAsync(Guid postId, InteractionType type, CancellationToken ct)
-        => dbContext.Interactions.CountAsync(i => i.PostId == postId && i.InteractionType == type, ct);
+    public Task AddReportAsync(Report report, CancellationToken ct)
+    {
+        dbContext.Reports.Add(report);
+        return Task.CompletedTask;
+    }
 
     public Task SaveChangesAsync(CancellationToken ct) => dbContext.SaveChangesAsync(ct);
 }

@@ -222,7 +222,7 @@ public class PostService(
         var user = await RequireUserAsync(auth, ct);
         var post = await postRepository.GetPostByIdAsync(postId) ?? throw new KeyNotFoundException("Post not found.");
 
-        var exists = await postRepository.HasInteractionAsync(user.Id, postId, type, ct);
+        var exists = post.Interactions.Any(i => i.UserId == user.Id && i.InteractionType == type);
         if (!exists)
         {
             var interaction = new Interaction(user.Id, postId, type);
@@ -245,5 +245,40 @@ public class PostService(
         
         await postRepository.SaveChangesAsync(ct);
         return post;
+    }
+
+    // Reports
+    public async Task<Report> ReportPostAsync(AuthContext auth, Guid postId, string reason, CancellationToken ct)
+    {
+        var user = await RequireUserAsync(auth, ct);
+        if (string.IsNullOrWhiteSpace(reason)) throw new ArgumentException("Reason is required.");
+        var post = await postRepository.GetPostByIdAsync(postId) ?? throw new KeyNotFoundException("Post not found.");
+
+        var alreadyOpen = post.Reports.Any(r => r.ReporterId == user.Id && r.Status == ReportStatus.Open && r.DeletedDate == null);
+        if (alreadyOpen)
+        {
+            // Idempotent: return existing open report if you prefer; minimal: throw
+            throw new InvalidOperationException("You already have an open report for this post.");
+        }
+
+        var report = new Report(post.Id, user.Id, reason.Trim());
+
+        await postRepository.AddReportAsync(report, ct);
+        await postRepository.SaveChangesAsync(ct);
+        return report;
+    }
+
+    public async Task<Report> ModerateReportAsync(AuthContext auth, Guid postId, Guid reportId, ReportStatus status, string? moderatorNote, CancellationToken ct)
+    {
+        // NOTE: Authorization for moderator role can be enforced here or via policies on the controller.
+        var moderator = await RequireUserAsync(auth, ct);
+        var post = await postRepository.GetPostByIdAsync(postId) ?? throw new KeyNotFoundException("Post not found.");
+        var report = post.Reports.SingleOrDefault(r => r.Id == reportId && r.DeletedDate == null)
+                     ?? throw new KeyNotFoundException("Report not found.");
+
+        report.Moderate(status, moderator.Id, moderatorNote);
+
+        await postRepository.SaveChangesAsync(ct);
+        return report;
     }
 }

@@ -50,7 +50,7 @@ public class PostController(IPostService postService, IAuthContextProvider authC
     public async Task<IActionResult> AddInteraction(Guid id, [FromBody] AddInteractionRequest req, CancellationToken ct)
     {
         await postService.AddInteractionAsync(authContextProvider.GetCurrent(), id, req.InteractionType, ct);
-        return NoContent();
+        return Ok($"Interaction {req.InteractionType} added to post {id}");
     }
 
     [HttpDelete("{id:guid}/interactions")]
@@ -58,7 +58,24 @@ public class PostController(IPostService postService, IAuthContextProvider authC
     public async Task<IActionResult> RemoveInteraction(Guid id, [FromBody] AddInteractionRequest req, CancellationToken ct)
     {
         await postService.RemoveInteractionAsync(authContextProvider.GetCurrent(), id, req.InteractionType, ct);
-        return NoContent();
+        return Ok($"Interaction {req.InteractionType} removed from post {id}");
+    }
+
+    // Reports
+    [HttpPost("{id:guid}/reports")]
+    [Authorize]
+    public async Task<IActionResult> ReportPost(Guid id, [FromBody] ReportPostRequest req, CancellationToken ct)
+    {
+        await postService.ReportPostAsync(authContextProvider.GetCurrent(), id, req.Reason, ct);
+        return Ok($"Report submitted for post {id}");
+    }
+
+    [HttpPut("{postId:guid}/reports/{reportId:guid}")]
+    [Authorize]
+    public async Task<IActionResult> ModerateReport(Guid postId, Guid reportId, [FromBody] ModerateReportRequest req, CancellationToken ct)
+    {
+        await postService.ModerateReportAsync(authContextProvider.GetCurrent(), postId, reportId, req.Status, req.ModeratorNote, ct);
+        return Ok($"Report {reportId} for post {postId} moderated to {req.Status}");
     }
     
 }
