@@ -11,7 +11,6 @@ public class Post : BaseEntity
     private readonly List<PostLocation> _postLocations = new();
     private readonly List<PostComment> _comments = new();
     private readonly List<Report> _reports = new();
-    private readonly List<PostDifficulty> _postDifficulties = new();
     
     public Guid Id { get; init; }
     public Guid UserId { get; private set; }
@@ -26,6 +25,7 @@ public class Post : BaseEntity
     public DateTimeOffset UpdatedDate { get; private set; }
     public PostStatus Status { get; private set; }
     public DateTimeOffset? DeletedDate { get; private set; }
+    public PostDifficulty? PostDifficulty { get; private set; }
 
     public User User { get; private set; } = null!;
     public IReadOnlyCollection<PostPhoto> Photos => _photos.AsReadOnly();
@@ -35,7 +35,6 @@ public class Post : BaseEntity
     public IReadOnlyCollection<PostLocation> PostLocations => _postLocations.AsReadOnly();
     public IReadOnlyCollection<PostComment> Comments => _comments.AsReadOnly();
     public IReadOnlyCollection<Report> Reports => _reports.AsReadOnly();
-    public IReadOnlyCollection<PostDifficulty> PostDifficulties => _postDifficulties.AsReadOnly();
     
     private Post() { /* private constructor for EF */}
     
@@ -46,6 +45,7 @@ public class Post : BaseEntity
         Season season,
         int elevationGain,
         int duration,
+        Guid difficultyId,
         string? routeName = null)
     {
         Id = Guid.NewGuid();
@@ -59,6 +59,11 @@ public class Post : BaseEntity
         LikeCount = 0;
         SaveCount = 0;
         Status = PostStatus.Draft;
+        
+        if (difficultyId != Guid.Empty)
+        {
+            SetDifficulty(difficultyId);
+        }
 
         SetCreatedDate();
         UpdatedDate = CreatedDate;
@@ -96,6 +101,17 @@ public class Post : BaseEntity
         if (_postLocations.Any(pl => pl.LocationId == postLocation.LocationId)) return; // already linked
         _postLocations.Add(postLocation);
     }
+
+    public void SetDifficulty(Guid difficultyId)
+    {
+        if (difficultyId == Guid.Empty) throw new ArgumentException("DifficultyId cannot be empty.");
+
+        PostDifficulty = new PostDifficulty(Id, difficultyId);
+        UpdatedDate = DateTimeOffset.UtcNow;
+    }
+
+    // Backward-compatible alias
+    public void AddDifficulty(Guid difficultyId) => SetDifficulty(difficultyId);
     
     public void IncrementLikeCount() => LikeCount++;
     public void DecrementLikeCount() => LikeCount = Math.Max(0, LikeCount - 1);

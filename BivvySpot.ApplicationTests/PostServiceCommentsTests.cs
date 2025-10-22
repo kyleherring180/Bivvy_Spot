@@ -17,8 +17,10 @@ public class PostServiceCommentsTests
     private static AuthContext Auth() => new("auth0", "auth0|user", "user@example.com", "User");
     private static User MakeUser() => new("User", "First", "Last", "user@example.com");
     private PostService CreateSut() => new(_userRepo.Object, _postRepo.Object, _tagRepo.Object);
+    private static Difficulty MakeDifficulty()
+        => new(ActivityType.Hiking, "Easy");
     private static Post MakePost(Guid? userId = null)
-        => new(userId ?? Guid.NewGuid(), title: "T", body: "B", season: Season.Summer, elevationGain: 10, duration: 20, routeName: null);
+        => new(userId ?? Guid.NewGuid(), title: "T", body: "B", season: Season.Summer, elevationGain: 10, duration: 20, difficultyId: MakeDifficulty().Id, routeName: null);
 
     private static void AddTopLevelComment(Post post, PostComment c)
     {

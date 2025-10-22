@@ -9,7 +9,8 @@ public class PostModelTests
     public void Constructor_Sets_Defaults()
     {
         var userId = Guid.NewGuid();
-        var post = new Post(userId, "  Title  ", "Body", Season.Summer, 10, 5);
+        var difficultyId = Guid.NewGuid();
+        var post = new Post(userId, "  Title  ", "Body", Season.Summer, 10, 5, difficultyId);
         Assert.Equal(userId, post.UserId);
         Assert.Equal("Title", post.Title);
         Assert.Equal(0, post.LikeCount);
@@ -21,7 +22,7 @@ public class PostModelTests
     [Fact]
     public void Update_Changes_Fields_And_Normalizes()
     {
-        var post = new Post(Guid.NewGuid(), "T", "B", Season.Winter, 0, 0);
+        var post = new Post(Guid.NewGuid(), "T", "B", Season.Winter, 0, 0, Guid.NewGuid());
         post.Update(title: "  New  ", routeName: "  Route  ", body: "NB", season: Season.Summer, elevationGain: 123, duration: 45, status: PostStatus.Published);
         Assert.Equal("New", post.Title);
         Assert.Equal("Route", post.RouteName);
@@ -35,7 +36,7 @@ public class PostModelTests
     [Fact]
     public void ApplyInteractionChange_Updates_Counts_And_Clamps()
     {
-        var post = new Post(Guid.NewGuid(), "T", "B", Season.Summer, 0, 0);
+        var post = new Post(Guid.NewGuid(), "T", "B", Season.Summer, 0, 0, Guid.NewGuid());
         post.ApplyInteractionChange(InteractionType.Like, +1);
         post.ApplyInteractionChange(InteractionType.Save, +2);
         Assert.Equal(1, post.LikeCount);

@@ -13,4 +13,5 @@ public class CreatePostDto
     public string? RouteName { get; set; }
     public IReadOnlyCollection<string>? Tags { get; set; }
     public IReadOnlyCollection<Guid>? LocationIds { get; set; }
+    public Guid DifficultyId { get; set; }
 }

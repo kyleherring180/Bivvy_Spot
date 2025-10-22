@@ -22,6 +22,8 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
             .Include(p => p.Photos)
             .Include(p => p.Comments)
                 .ThenInclude(c => c.Replies)
+            .Include(p => p.PostDifficulty)
+                .ThenInclude(pd => pd.Difficulty)
             .SingleOrDefaultAsync(p => p.Id == postId && p.UserId == authorUserId && p.DeletedDate == null, ct)!;
 
     public Task<Post> GetPostByIdAsync(Guid postId) => 
@@ -33,6 +35,8 @@ public class PostRepository(BivvySpotContext dbContext) : IPostRepository
             .Include(p => p.Photos)
             .Include(p => p.Comments)
                 .ThenInclude(c => c.Replies)
+            .Include(p => p.PostDifficulty)
+                .ThenInclude(pd => pd.Difficulty)
             .SingleOrDefaultAsync(p => p.Id == postId)!;
     
     public Task<IEnumerable<Post>> GetPostsAsync(int page, int pageSize) =>

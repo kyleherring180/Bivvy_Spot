@@ -26,6 +26,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<ITagRepository, TagRepository>()
             .AddScoped<ILocationRepository, LocationRepository>()
-            .AddScoped<ILocationSuggestionRepository, LocationSuggestionRepository>();
+            .AddScoped<ILocationSuggestionRepository, LocationSuggestionRepository>()
+            .AddScoped<IDifficultyRepository, DifficultyRepository>();
     }
 }

@@ -12,13 +12,14 @@ public class PostDifficultyConfiguration : IEntityTypeConfiguration<PostDifficul
         builder.Property(x => x.Id).ValueGeneratedNever();
 
         builder.HasOne(x => x.Post)
-            .WithMany(p => p.PostDifficulties)
-            .HasForeignKey(x => x.PostId);
+            .WithOne(p => p.PostDifficulty)
+            .HasForeignKey<PostDifficulty>(x => x.PostId);
 
         builder.HasOne(x => x.Difficulty)
             .WithMany(d => d.PostDifficulties)
             .HasForeignKey(x => x.DifficultyId);
 
-        builder.HasIndex(x => new { x.PostId, x.DifficultyId }).IsUnique();
+        // Enforce only one difficulty per post at the database level
+        builder.HasIndex(x => x.PostId).IsUnique();
     }
 }

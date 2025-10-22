@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<IAccountService, AccountService>()
             .AddScoped<IPostService, PostService>()
             .AddScoped<ILocationService, LocationService>()
+            .AddScoped<IDifficultyService, DifficultyService>()
             .AddScoped<IGeometryParser, GeoJsonGeometryParser>();
     }
 }

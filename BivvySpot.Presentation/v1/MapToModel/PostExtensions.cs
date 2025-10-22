@@ -16,7 +16,8 @@ public static class PostExtensions
             ElevationGain = req.ElevationGain,
             Duration = req.Duration,
             Tags = req.Tags?.ToList() ?? new List<string>(),
-            LocationIds = req.LocationIds?.ToList()
+            LocationIds = req.LocationIds?.ToList(),
+            DifficultyId = req.DifficultyId
         };
     }
     

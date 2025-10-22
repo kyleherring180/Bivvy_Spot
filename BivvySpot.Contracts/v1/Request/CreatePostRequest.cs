@@ -10,5 +10,6 @@ public record CreatePostRequest(
     int Duration, 
     string? RouteName,
     IReadOnlyCollection<string>? Tags,
-    IReadOnlyCollection<Guid>? LocationIds
+    IReadOnlyCollection<Guid>? LocationIds,
+    Guid DifficultyId
     );

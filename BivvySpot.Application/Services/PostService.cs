@@ -26,6 +26,7 @@ public class PostService(
             season: dto.Season,
             elevationGain: dto.ElevationGain,
             duration: dto.Duration,
+            difficultyId: dto.DifficultyId,
             routeName: dto.RouteName
         );
 
