@@ -29,6 +29,7 @@
     <ItemGroup>
       <ProjectReference Include="..\BivvySpot.Data\BivvySpot.Data.csproj" />
       <ProjectReference Include="..\BivvySpot.Presentation\BivvySpot.Presentation.csproj" />
+      <ProjectReference Include="..\BivvySpot.Infrastructure\BivvySpot.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

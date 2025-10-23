@@ -3,6 +3,7 @@ using BivvySpot.Application.Extensions;
 using BivvySpot.Data;
 using BivvySpot.Data.Extensions;
 using BivvySpot.Presentation.Extensions;
+using BivvySpot.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -59,7 +60,8 @@ builder.Services.AddDbContext<BivvySpotContext>(o =>
 
 builder.Services
     .AddData(connectionString)
-    .AddApplication(builder.Configuration)
+    .AddApplication()
+    .AddBlobStorage(builder.Configuration)
     .AddPresentation()
     .AddSecurity();
 

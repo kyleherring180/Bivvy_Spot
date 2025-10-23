@@ -9,7 +9,7 @@ namespace BivvySpot.Application.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         return services
             .AddApplicationWithoutConfiguration();
