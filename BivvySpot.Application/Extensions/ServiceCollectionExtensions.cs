@@ -22,6 +22,8 @@ public static class ServiceCollectionExtensions
             .AddScoped<IPostService, PostService>()
             .AddScoped<ILocationService, LocationService>()
             .AddScoped<IDifficultyService, DifficultyService>()
-            .AddScoped<IGeometryParser, GeoJsonGeometryParser>();
+            .AddScoped<IGeometryParser, GeoJsonGeometryParser>()
+            .AddScoped<IPhotoService, PhotoService>()
+            .AddScoped<IGpxService, GpxService>();
     }
 }

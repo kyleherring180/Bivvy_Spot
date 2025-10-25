@@ -1,4 +1,3 @@
-using BivvySpot.Contracts.v1.Request;
 using BivvySpot.Model.Dtos;
 using BivvySpot.Model.Entities;
 using BivvySpot.Model.Enums;

@@ -4,6 +4,7 @@ using BivvySpot.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
@@ -12,9 +13,11 @@ using NetTopologySuite.Geometries;
 namespace BivvySpot.Data.Migrations
 {
     [DbContext(typeof(BivvySpotContext))]
-    partial class BivvySpotContextModelSnapshot : ModelSnapshot
+    [Migration("20251025202148_Add_Properties_to_PostPhoto")]
+    partial class Add_Properties_to_PostPhoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
